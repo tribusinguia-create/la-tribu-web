@@ -54,8 +54,6 @@ export default function TarjetaPerfil({ perfil }) {
           <div className="border"></div>
           <div className="icons">
             <div className="logo flex items-center gap-1.5">
-              <img src={logoTribu} alt="Logo" className="w-5 h-5 rounded-md object-cover border border-[#50f6ff]" />
-              <span className="font-extrabold text-[10px] text-[#50f6ff] tracking-wider">TRIBU</span>
             </div>
             <div className="social-media">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" className="svg">
