@@ -51,12 +51,16 @@ export default function TarjetaPerfil({ perfil }) {
       <div className="uiverse-card mx-auto cursor-pointer" onClick={() => setModalAbierto(true)}>
         <div className="top-section">
           <img src={fotoOptimizada} alt={perfil.nombre} className="bg-photo" />
-          <div className="border"></div>
+          
+          {/* Se eliminó el <div className="border"></div> para quitar el parche superior */}
+
           <div className="icons">
-            <div className="logo flex items-center gap-1.5">
+            <div className="logo flex items-center gap-1.5 drop-shadow-md">
+              <img src={logoTribu} alt="Logo" className="w-5 h-5 rounded-md object-cover border border-[#50f6ff]" />
+              <span className="font-extrabold text-[10px] text-[#50f6ff] tracking-wider drop-shadow-lg">TRIBU</span>
             </div>
             <div className="social-media">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" className="svg">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" className="svg drop-shadow-md">
                 <path d="M 9.9980469 3 C 6.1390469 3 3 6.1419531 3 10.001953 L 3 20.001953 C 3 23.860953 6.1419531 27 10.001953 27 L 20.001953 27 C 23.860953 27 27 23.858047 27 19.998047 L 27 9.9980469 C 27 6.1390469 23.858047 3 19.998047 3 L 9.9980469 3 z M 22 7 C 22.552 7 23 7.448 23 8 C 23 8.552 22.552 9 22 9 C 21.448 9 21 8.552 21 8 C 21 7.448 21.448 7 22 7 z M 15 9 C 18.309 9 21 11.691 21 15 C 21 18.309 18.309 21 15 21 C 11.691 21 9 18.309 9 15 C 9 11.691 11.691 9 15 9 z M 15 11 A 4 4 0 0 0 11 15 A 4 4 0 0 0 15 19 A 4 4 0 0 0 19 15 A 4 4 0 0 0 15 11 z"></path>
               </svg>
             </div>
@@ -84,6 +88,7 @@ export default function TarjetaPerfil({ perfil }) {
         </div>
       </div>
 
+      {/* Modal */}
       {modalAbierto && (
         <div className="fixed inset-0 bg-black/75 backdrop-blur-md flex items-center justify-center p-4 z-50">
           <div className="bg-[#1b233d] text-white rounded-3xl max-w-lg w-full p-6 relative border border-cyan-500/30 shadow-2xl max-h-[90vh] overflow-y-auto">
