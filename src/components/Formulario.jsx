@@ -27,6 +27,7 @@ export default function Formulario() {
   const [formData, setFormData] = useState({
     nombre: '',
     fecha_nacimiento: '',
+    fecha_ingreso_tribu: '',
     whatsapp: '',
     ubicacion: '',
     profesion: '',
@@ -85,12 +86,18 @@ export default function Formulario() {
         }
       }
 
+      // Convertimos el valor del mes (YYYY-MM) a fecha válida (YYYY-MM-01)
+      const fechaIngresoFormateada = formData.fecha_ingreso_tribu 
+        ? `${formData.fecha_ingreso_tribu}-01` 
+        : null;
+
       const { error } = await supabase
         .from('perfiles')
         .insert([
           {
             nombre: formData.nombre,
             fecha_nacimiento: formData.fecha_nacimiento || null,
+            fecha_ingreso_tribu: fechaIngresoFormateada,
             whatsapp: formData.whatsapp,
             ubicacion: formData.ubicacion,
             profesion: formData.profesion,
@@ -109,9 +116,9 @@ export default function Formulario() {
       alert('¡Registro exitoso en La Tribu! ⛰️');
 
       setFormData({
-        nombre: '', fecha_nacimiento: '', whatsapp: '', ubicacion: '',
-        profesion: '', sobre_ti: '', dato_curioso: '', saberes_compartir: '',
-        redes_portafolio: '', consentimiento: false,
+        nombre: '', fecha_nacimiento: '', fecha_ingreso_tribu: '', whatsapp: '',
+        ubicacion: '', profesion: '', sobre_ti: '', dato_curioso: '', 
+        saberes_compartir: '', redes_portafolio: '', consentimiento: false,
       });
       setInteresesSeleccionados([]);
       setFotoArchivo(null);
@@ -138,7 +145,7 @@ export default function Formulario() {
           <p className="title">TRIBU SIN GUÍA ⛰️</p>
         </div>
 
-        {/* Intro para la comunidad de senderismo en Bogotá */}
+        {/* Intro */}
         <div className="w-full mb-8 text-left border-b-2 border-[#264143]/20 pb-6">
           <div className="bg-white/80 border-2 border-[#264143] p-5 rounded-xl shadow-[3px_3px_0px_0px_#E99F4C] mb-4">
             <h3 className="text-sm font-black text-[#264143] tracking-wide uppercase mb-2 flex items-center gap-2">
@@ -180,6 +187,17 @@ export default function Formulario() {
               value={formData.fecha_nacimiento} onChange={handleChange}
               className="uiverse-form-style"
             />
+          </div>
+
+          {/* Selección de Mes/Año de Ingreso a Tribu Sin Guía */}
+          <div className="uiverse-form-group">
+            <label className="uiverse-sub_title">¿En qué mes y año te uniste a Tribu Sin Guía? *</label>
+            <input 
+              type="month" name="fecha_ingreso_tribu" required
+              value={formData.fecha_ingreso_tribu} onChange={handleChange}
+              className="uiverse-form-style cursor-pointer"
+            />
+            <span className="text-[10px] text-[#264143] mt-1">Selecciona el mes en el que entraste al grupo</span>
           </div>
 
           {/* Foto de perfil */}

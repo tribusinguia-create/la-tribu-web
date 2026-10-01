@@ -4,43 +4,53 @@ import logoTribu from '../assets/logo.jpeg';
 export default function TarjetaPerfil({ perfil }) {
   const [modalAbierto, setModalAbierto] = useState(false);
 
-  // OPTIMIZACIÓN DE CLOUDINARY: Reduce fotos pesadas a solo ~40KB al vuelo
   const fotoOptimizada = perfil.foto_perfil 
     ? perfil.foto_perfil.replace('/upload/', '/upload/f_auto,q_auto,w_400/') 
     : 'https://via.placeholder.com/300';
 
-  // Cálculo de edad y cumpleaños
+  // Cálculo de Edad y Cumpleaños
   const obtenerEdadYCumple = (fechaStr) => {
     if (!fechaStr) return { edad: null, cumpleaños: null };
-
     const hoy = new Date();
     const nacimiento = new Date(fechaStr + 'T00:00:00');
 
     let edad = hoy.getFullYear() - nacimiento.getFullYear();
     const mes = hoy.getMonth() - nacimiento.getMonth();
-    
     if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
       edad--;
     }
 
-    const opciones = { day: 'numeric', month: 'long' };
-    const cumpleaños = nacimiento.toLocaleDateString('es-ES', opciones);
-
+    const cumpleaños = nacimiento.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' });
     return { edad, cumpleaños };
   };
 
+  // Cálculo Automático de Tiempo en La Tribu
+  const obtenerTiempoTribu = (fechaIngresoStr) => {
+    if (!fechaIngresoStr) return 'Reciente';
+
+    const hoy = new Date();
+    const ingreso = new Date(fechaIngresoStr + 'T00:00:00');
+
+    let meses = (hoy.getFullYear() - ingreso.getFullYear()) * 12 + (hoy.getMonth() - ingreso.getMonth());
+    
+    if (meses <= 0) return 'Recién llegado';
+    if (meses === 1) return '1 mes';
+    if (meses < 12) return `${meses} meses`;
+    
+    const años = Math.floor(meses / 12);
+    const mesesRestantes = meses % 12;
+    if (mesesRestantes === 0) return `${años} ${años === 1 ? 'año' : 'años'}`;
+    return `${años} a, ${mesesRestantes} m`;
+  };
+
   const { edad, cumpleaños } = obtenerEdadYCumple(perfil.fecha_nacimiento);
+  const tiempoTribu = obtenerTiempoTribu(perfil.fecha_ingreso_tribu);
 
   return (
     <>
       <div className="uiverse-card mx-auto cursor-pointer" onClick={() => setModalAbierto(true)}>
         <div className="top-section">
-          {/* Usamos fotoOptimizada aquí */}
-          <img 
-            src={fotoOptimizada} 
-            alt={perfil.nombre} 
-            className="bg-photo"
-          />
+          <img src={fotoOptimizada} alt={perfil.nombre} className="bg-photo" />
           <div className="border"></div>
           <div className="icons">
             <div className="logo flex items-center gap-1.5">
@@ -69,8 +79,8 @@ export default function TarjetaPerfil({ perfil }) {
               <span className="regular-text">Cumpleaños</span>
             </div>
             <div className="item">
-              <span className="big-text">{perfil.ubicacion ? perfil.ubicacion.split('/')[0] : 'Bogotá'}</span>
-              <span className="regular-text">Ubicación</span>
+              <span className="big-text">{tiempoTribu}</span>
+              <span className="regular-text">En Tribu</span>
             </div>
           </div>
         </div>
@@ -87,18 +97,14 @@ export default function TarjetaPerfil({ perfil }) {
             </button>
 
             <div className="flex flex-col items-center text-center mb-6">
-              {/* También usamos fotoOptimizada aquí */}
-              <img 
-                src={fotoOptimizada} 
-                alt={perfil.nombre} 
-                className="w-28 h-28 rounded-2xl object-cover border-2 border-[#50f6ff] shadow-lg mb-3"
-              />
+              <img src={fotoOptimizada} alt={perfil.nombre} className="w-28 h-28 rounded-2xl object-cover border-2 border-[#50f6ff] shadow-lg mb-3" />
               <h2 className="text-2xl font-black tracking-wide text-white">{perfil.nombre}</h2>
               <p className="text-[#50f6ff] text-sm font-semibold">{perfil.profesion || 'Miembro de La Tribu'}</p>
               
-              <div className="flex gap-3 text-xs mt-2 text-cyan-200 bg-cyan-950/60 px-3 py-1 rounded-full border border-cyan-800/50">
+              <div className="flex flex-wrap justify-center gap-2 text-xs mt-2 text-cyan-200 bg-cyan-950/60 px-3 py-1.5 rounded-full border border-cyan-800/50">
                 {edad && <span>🎂 {edad} años</span>}
                 {cumpleaños && <span>🎉 Cumple el {cumpleaños}</span>}
+                <span>🥾 LLEVA: {tiempoTribu}</span>
               </div>
             </div>
 

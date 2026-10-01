@@ -14,10 +14,10 @@ export default function Directorio({ modoOscuro }) {
 
   const obtenerPerfiles = async () => {
     try {
-      // Excluimos explícitamente el campo 'whatsapp' para proteger la privacidad
+      // Consultamos los campos necesarios excluyendo el campo de WhatsApp por privacidad
       const { data, error } = await supabase
         .from('perfiles')
-        .select('id, nombre, foto_perfil, profesion, ubicacion, sobre_ti, dato_curioso, fecha_nacimiento, intereses_categorias, saberes_compartir, redes_portafolio')
+        .select('id, nombre, foto_perfil, profesion, ubicacion, sobre_ti, dato_curioso, fecha_nacimiento, fecha_ingreso_tribu, intereses_categorias, saberes_compartir, redes_portafolio')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
