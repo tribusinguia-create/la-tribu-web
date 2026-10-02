@@ -7,23 +7,23 @@ export default function Directorio({ modoOscuro }) {
   const [perfiles, setPerfiles] = useState([]);
   const [busqueda, setBusqueda] = useState('');
   const [cargando, setCargando] = useState(true);
-  const [filtroActivo, setFiltroActivo] = useState(null); // Nuevo estado para el filtro de colores
+  const [filtroActivo, setFiltroActivo] = useState(null);
 
-  // Mapeo de los 13 intereses del formulario con 13 colores vibrantes
+  // Mapeo de los 13 intereses del formulario con colores vibrantes
   const coloresIntereses = [
-    { name: 'Música', color: '#facc15' },               /* Amarillo */
-    { name: 'Películas/Series', color: '#e11d48' },     /* Rojo Rosa */
-    { name: 'Videojuegos', color: '#3b82f6' },          /* Azul Rey */
-    { name: 'Libros', color: '#8b5cf6' },               /* Morado */
-    { name: 'Deportes', color: '#fb923c' },             /* Naranja */
-    { name: 'Viajes', color: '#0ea5e9' },               /* Azul Cielo */
-    { name: 'Gastronomía', color: '#f472b6' },          /* Rosa */
-    { name: 'Arte / Diseño', color: '#84cc16' },        /* Verde Lima */
-    { name: 'Fotografía', color: '#10b981' },           /* Esmeralda */
-    { name: 'Tecnología', color: '#64748b' },           /* Gris Pizarra */
-    { name: 'Naturaleza', color: '#22c55e' },           /* Verde Naturaleza */
-    { name: 'Conciertos / Eventos', color: '#6366f1' }, /* Índigo */
-    { name: 'Otro hobby o interés que quieras compartir', color: '#14b8a6' }, /* Teal */
+    { name: 'Música', color: '#facc15' },
+    { name: 'Películas/Series', color: '#e11d48' },
+    { name: 'Videojuegos', color: '#3b82f6' },
+    { name: 'Libros', color: '#8b5cf6' },
+    { name: 'Deportes', color: '#fb923c' },
+    { name: 'Viajes', color: '#0ea5e9' },
+    { name: 'Gastronomía', color: '#f472b6' },
+    { name: 'Arte / Diseño', color: '#84cc16' },
+    { name: 'Fotografía', color: '#10b981' },
+    { name: 'Tecnología', color: '#64748b' },
+    { name: 'Naturaleza', color: '#22c55e' },
+    { name: 'Conciertos / Eventos', color: '#6366f1' },
+    { name: 'Otro hobby o interés que quieras compartir', color: '#14b8a6' },
   ];
 
   useEffect(() => {
@@ -32,9 +32,10 @@ export default function Directorio({ modoOscuro }) {
 
   const obtenerPerfiles = async () => {
     try {
+      // AQUÍ AGREGAMOS "es_admin" A LA CONSULTA DE SUPABASE
       const { data, error } = await supabase
         .from('perfiles')
-        .select('id, nombre, foto_perfil, profesion, ubicacion, sobre_ti, dato_curioso, fecha_nacimiento, fecha_ingreso_tribu, intereses_categorias, saberes_compartir, redes_portafolio')
+        .select('id, nombre, foto_perfil, profesion, ubicacion, sobre_ti, dato_curioso, fecha_nacimiento, fecha_ingreso_tribu, intereses_categorias, saberes_compartir, redes_portafolio, es_admin')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -47,7 +48,6 @@ export default function Directorio({ modoOscuro }) {
   };
 
   const handleToggleFiltro = (interesName) => {
-    // Si cliquea el mismo filtro, lo quita; si cliquea otro, lo cambia.
     if (filtroActivo === interesName) {
       setFiltroActivo(null);
     } else {
@@ -76,7 +76,7 @@ export default function Directorio({ modoOscuro }) {
   if (cargando) {
     return (
       <div className="text-center py-20">
-        <p className="text-green-500 font-bold text-lg animate-pulse">Cargando La Tribu... ⛰️</p>
+        <p className="text-[#a54d17] font-black text-xl animate-pulse">Cargando La Tribu... ⛰️</p>
       </div>
     );
   }
@@ -100,17 +100,17 @@ export default function Directorio({ modoOscuro }) {
             placeholder="🔍 Buscar por nombre, profesión o ciudad..."
             value={busqueda}
             onChange={(e) => setBusqueda(e.target.value)}
-            className={`w-full p-3.5 rounded-2xl border outline-none transition shadow-[3px_4px_0px_0px_#E99F4C] text-sm font-semibold ${
+            className={`w-full p-3.5 rounded-2xl border outline-none transition shadow-[3px_4px_0px_0px_#a54d17] text-sm font-semibold ${
               modoOscuro
-                ? 'bg-[#1b233d] border-[#50f6ff]/50 text-white placeholder-slate-400 focus:border-[#50f6ff]'
-                : 'bg-[#EDDCD9] border-[#264143] text-[#264143] placeholder-[#264143]/70 focus:border-[#DE5499]'
+                ? 'bg-[#012e29] border-[#f6ebd4]/50 text-white placeholder-slate-400 focus:border-[#f6ebd4]'
+                : 'bg-[#f6ebd4] border-[#012e29] text-[#012e29] placeholder-[#012e29]/70 focus:border-[#a54d17]'
             }`}
           />
         </div>
 
         {/* Botonera de Colores Comic (Filtros) */}
         <div className="flex flex-col items-center">
-          <p className={`text-xs font-bold mb-2 uppercase tracking-wide ${modoOscuro ? 'text-[#50f6ff]' : 'text-[#DE5499]'}`}>
+          <p className={`text-xs font-bold mb-2 uppercase tracking-wide ${modoOscuro ? 'text-[#f6ebd4]' : 'text-[#a54d17]'}`}>
             👇 Filtra por intereses 👇
           </p>
           <div className="comic-panel-wrapper">
