@@ -6,8 +6,7 @@ export default function TarjetaPerfil({ perfil }) {
   const [modalAbierto, setModalAbierto] = useState(false);
 
   // 👉 AQUÍ DEFINES QUIÉNES SON ADMINISTRADORES (Nombres exactos)
-  const administradores = ['Luis Niño', 'Otro Nombre', 'Tu Nombre'];
-  const esAdmin = administradores.includes(perfil.nombre);
+const esAdmin = perfil.es_admin === true;
 
   const fotoOptimizada = perfil.foto_perfil 
     ? perfil.foto_perfil.replace('/upload/', '/upload/f_auto,q_auto,w_400/') 
