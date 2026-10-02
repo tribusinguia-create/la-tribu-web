@@ -1,18 +1,16 @@
 import { useState } from 'react';
 import logoTribu from '../assets/logo.jpeg';
-import hikerSvg from '../assets/HbxrC01.svg'; // Importamos tu nuevo SVG del caminante
+import hikerSvg from '../assets/HbxrC01.svg';
 
 export default function TarjetaPerfil({ perfil }) {
   const [modalAbierto, setModalAbierto] = useState(false);
 
-  // 👉 AQUÍ DEFINES QUIÉNES SON ADMINISTRADORES (Nombres exactos)
-const esAdmin = perfil.es_admin === true;
+  const esAdmin = perfil.es_admin === true;
 
   const fotoOptimizada = perfil.foto_perfil 
     ? perfil.foto_perfil.replace('/upload/', '/upload/f_auto,q_auto,w_400/') 
     : 'https://via.placeholder.com/300';
 
-  // Cálculos de fecha
   const obtenerEdadYCumple = (fechaStr) => {
     if (!fechaStr) return { edad: null, cumpleaños: null };
     const hoy = new Date();
@@ -47,8 +45,6 @@ const esAdmin = perfil.es_admin === true;
         // 🌟 TARJETA 3D EXCLUSIVA PARA ADMINISTRADORES 🌟
         <div className="admin-card mx-auto cursor-pointer" onClick={() => setModalAbierto(true)}>
           <div className="admin-content">
-            
-            {/* FRENTE: Foto y datos */}
             <div className="admin-front">
               <div className="admin-img">
                 <div className="admin-circle"></div>
@@ -63,8 +59,8 @@ const esAdmin = perfil.es_admin === true;
                     <p className="admin-title">
                       <strong>{perfil.nombre}</strong>
                     </p>
-                    {/* SVG tuyo invertido para que se vea blanco sobre fondo oscuro */}
-                    <img src={hikerSvg} alt="Hiker" className="w-6 h-6 invert opacity-90" />
+                    {/* Restaurado el logo cuadrado en el frente */}
+                    <img src={logoTribu} alt="Logo" className="w-6 h-6 rounded-md object-cover" />
                   </div>
                   <p className="admin-card-footer">
                     {tiempoTribu} en Tribu &nbsp; | &nbsp; {edad ? `${edad} años` : ''}
@@ -72,16 +68,14 @@ const esAdmin = perfil.es_admin === true;
                 </div>
               </div>
             </div>
-
-            {/* REVERSO: Efecto de Hover interactivo */}
             <div className="admin-back">
               <div className="admin-back-content shadow-inner">
-                <img src={logoTribu} alt="Logo" className="w-20 h-20 rounded-xl shadow-[4px_4px_0px_0px_#264143] border-2 border-[#264143] mb-4" />
-                <strong className="text-xl font-black tracking-widest text-[#264143]">VER PERFIL</strong>
-                <span className="text-xs font-bold text-[#DE5499] mt-1">Administrador</span>
+                {/* 👇 AQUÍ ES EL ÚNICO LUGAR DONDE USAMOS LA SILUETA DEL CAMINANTE 👇 */}
+                <img src={hikerSvg} alt="Silueta Caminante" className="w-24 h-24 mb-2 drop-shadow-md" />
+                <strong className="text-xl font-black tracking-widest text-[#012e29]">VER PERFIL</strong>
+                <span className="text-xs font-bold text-[#a54d17] mt-1">Administrador</span>
               </div>
             </div>
-
           </div>
         </div>
       ) : (
@@ -91,8 +85,9 @@ const esAdmin = perfil.es_admin === true;
             <img src={fotoOptimizada} alt={perfil.nombre} className="bg-photo" />
             <div className="icons">
               <div className="logo flex items-center gap-1.5 drop-shadow-md">
-                <img src={logoTribu} alt="Logo" className="w-5 h-5 rounded-md object-cover border border-[#50f6ff]" />
-                <span className="font-extrabold text-[10px] text-[#50f6ff] tracking-wider drop-shadow-lg">TRIBU</span>
+                {/* Restaurado el logo cuadrado original */}
+                <img src={logoTribu} alt="Logo" className="w-5 h-5 rounded-md object-cover border border-[#f6ebd4]" />
+                <span className="font-extrabold text-[10px] text-[#f6ebd4] tracking-wider drop-shadow-lg">TRIBU</span>
               </div>
             </div>
           </div>
@@ -117,30 +112,30 @@ const esAdmin = perfil.es_admin === true;
         </div>
       )}
 
-      {/* MODAL GLOBAL DE DETALLES (Se muestra igual para todos al dar clic) */}
+      {/* MODAL GLOBAL DE DETALLES */}
       {modalAbierto && (
         <div className="fixed inset-0 bg-black/75 backdrop-blur-md flex items-center justify-center p-4 z-50">
-          <div className="bg-[#1b233d] text-white rounded-3xl max-w-lg w-full p-6 relative border border-cyan-500/30 shadow-2xl max-h-[90vh] overflow-y-auto">
-            <button onClick={() => setModalAbierto(false)} className="absolute top-4 right-4 text-gray-400 hover:text-white font-bold text-xl">✕</button>
+          <div className="bg-[#f6ebd4] text-[#012e29] rounded-3xl max-w-lg w-full p-6 relative border-4 border-[#012e29] shadow-[6px_6px_0px_0px_#a54d17] max-h-[90vh] overflow-y-auto">
+            <button onClick={() => setModalAbierto(false)} className="absolute top-4 right-4 text-[#012e29] hover:text-[#a54d17] font-black text-xl">✕</button>
             <div className="flex flex-col items-center text-center mb-6">
-              <img src={fotoOptimizada} alt={perfil.nombre} className="w-28 h-28 rounded-2xl object-cover border-2 border-[#50f6ff] shadow-lg mb-3" />
-              <h2 className="text-2xl font-black tracking-wide text-white">
+              <img src={fotoOptimizada} alt={perfil.nombre} className="w-28 h-28 rounded-2xl object-cover border-4 border-[#012e29] shadow-[4px_4px_0px_0px_#a54d17] mb-3" />
+              <h2 className="text-2xl font-black tracking-wide font-titulos">
                 {perfil.nombre} {esAdmin && '👑'}
               </h2>
-              <p className="text-[#50f6ff] text-sm font-semibold">{perfil.profesion || 'Miembro de La Tribu'}</p>
-              <div className="flex flex-wrap justify-center gap-2 text-xs mt-2 text-cyan-200 bg-cyan-950/60 px-3 py-1.5 rounded-full border border-cyan-800/50">
+              <p className="text-[#a54d17] text-sm font-black uppercase tracking-wider">{perfil.profesion || 'Miembro de La Tribu'}</p>
+              <div className="flex flex-wrap justify-center gap-2 text-xs mt-3 text-[#f6ebd4] bg-[#012e29] px-4 py-2 rounded-xl font-bold">
                 {edad && <span>🎂 {edad} años</span>}
                 {cumpleaños && <span>🎉 Cumple el {cumpleaños}</span>}
                 <span>🥾 LLEVA: {tiempoTribu}</span>
               </div>
             </div>
-            <div className="space-y-4 text-left border-t border-gray-700/60 pt-4 text-xs text-gray-300">
-              {perfil.ubicacion && (<div><strong className="block text-[#50f6ff] text-sm mb-1">Origen / Residencia:</strong><p>{perfil.ubicacion}</p></div>)}
-              {perfil.sobre_ti && (<div><strong className="block text-[#50f6ff] text-sm mb-1">Sobre mí:</strong><p className="leading-relaxed">{perfil.sobre_ti}</p></div>)}
-              {perfil.dato_curioso && (<div><strong className="block text-[#50f6ff] text-sm mb-1">Dato Curioso / Random:</strong><p>{perfil.dato_curioso}</p></div>)}
-              {perfil.intereses_categorias?.length > 0 && (<div><strong className="block text-[#50f6ff] text-sm mb-1">Intereses Principales:</strong><div className="flex flex-wrap gap-1.5 mt-1">{perfil.intereses_categorias.map((cat, i) => (<span key={i} className="bg-cyan-950 text-[#50f6ff] border border-cyan-800 px-2.5 py-1 rounded-lg text-[11px] font-bold">#{cat}</span>))}</div></div>)}
-              {perfil.saberes_compartir && (<div><strong className="block text-[#50f6ff] text-sm mb-1">Saberes para compartir con La Tribu:</strong><p className="leading-relaxed">{perfil.saberes_compartir}</p></div>)}
-              {perfil.redes_portafolio && (<div><strong className="block text-[#50f6ff] text-sm mb-1">Redes / Portafolio:</strong><p className="font-mono text-cyan-200">{perfil.redes_portafolio}</p></div>)}
+            <div className="space-y-4 text-left border-t-2 border-[#012e29]/20 pt-4 text-sm font-semibold text-[#012e29]">
+              {perfil.ubicacion && (<div><strong className="block text-[#a54d17] mb-1 font-black">Origen / Residencia:</strong><p>{perfil.ubicacion}</p></div>)}
+              {perfil.sobre_ti && (<div><strong className="block text-[#a54d17] mb-1 font-black">Sobre mí:</strong><p className="leading-relaxed">{perfil.sobre_ti}</p></div>)}
+              {perfil.dato_curioso && (<div><strong className="block text-[#a54d17] mb-1 font-black">Dato Curioso / Random:</strong><p>{perfil.dato_curioso}</p></div>)}
+              {perfil.intereses_categorias?.length > 0 && (<div><strong className="block text-[#a54d17] mb-1 font-black">Intereses Principales:</strong><div className="flex flex-wrap gap-1.5 mt-2">{perfil.intereses_categorias.map((cat, i) => (<span key={i} className="bg-[#1b4f4b] text-[#f6ebd4] border-2 border-[#012e29] px-2.5 py-1 rounded-md text-[11px] font-bold shadow-[2px_2px_0px_0px_#012e29]">#{cat}</span>))}</div></div>)}
+              {perfil.saberes_compartir && (<div><strong className="block text-[#a54d17] mb-1 font-black">Saberes para compartir con La Tribu:</strong><p className="leading-relaxed">{perfil.saberes_compartir}</p></div>)}
+              {perfil.redes_portafolio && (<div><strong className="block text-[#a54d17] mb-1 font-black">Redes / Portafolio:</strong><p className="font-bold text-[#1b4f4b]">{perfil.redes_portafolio}</p></div>)}
             </div>
           </div>
         </div>
